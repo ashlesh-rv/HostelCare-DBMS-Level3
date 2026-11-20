@@ -1,0 +1,27 @@
+digraph HostelCareER {
+  graph [rankdir=LR, bgcolor="white", pad="0.25", nodesep="0.42", ranksep="0.70", splines=polyline, label="HostelCare — Hostel Room Allocation & Complaint Management System\nEntity–Relationship Diagram", labelloc=t, fontsize=20, fontname="Arial", color="#d5deeb"];
+  node [shape=plain, fontname="Arial", fontsize=10];
+  edge [fontname="Arial", fontsize=9, color="#344a67", arrowsize=0.7];
+  hostel [label=< <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" COLOR="#4778c8"><TR><TD BGCOLOR="#dceaff"><B>HOSTEL</B></TD></TR><TR><TD ALIGN="LEFT"><U>hostel_id</U> (PK)</TD></TR><TR><TD ALIGN="LEFT">hostel_name</TD></TR><TR><TD ALIGN="LEFT">location</TD></TR><TR><TD ALIGN="LEFT">gender_type</TD></TR></TABLE> >];
+  room [label=< <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" COLOR="#3d9b70"><TR><TD BGCOLOR="#e1f5e9"><B>ROOM</B></TD></TR><TR><TD ALIGN="LEFT"><U>room_id</U> (PK)</TD></TR><TR><TD ALIGN="LEFT">hostel_id (FK)</TD></TR><TR><TD ALIGN="LEFT">room_number, floor</TD></TR><TR><TD ALIGN="LEFT">capacity, room_type, status</TD></TR></TABLE> >];
+  student [label=< <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" COLOR="#4778c8"><TR><TD BGCOLOR="#dceaff"><B>STUDENT</B></TD></TR><TR><TD ALIGN="LEFT"><U>student_id</U> (PK)</TD></TR><TR><TD ALIGN="LEFT">name, email, phone</TD></TR><TR><TD ALIGN="LEFT">course, year</TD></TR></TABLE> >];
+  allocation [label=< <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" COLOR="#cf7c58"><TR><TD BGCOLOR="#ffe7dc"><B>ROOM_ALLOCATION</B></TD></TR><TR><TD ALIGN="LEFT"><U>allocation_id</U> (PK)</TD></TR><TR><TD ALIGN="LEFT">student_id (FK), room_id (FK)</TD></TR><TR><TD ALIGN="LEFT">allocation_date, vacating_date</TD></TR><TR><TD ALIGN="LEFT">status</TD></TR></TABLE> >];
+  warden [label=< <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" COLOR="#8a71b7"><TR><TD BGCOLOR="#eee5fb"><B>WARDEN</B></TD></TR><TR><TD ALIGN="LEFT"><U>warden_id</U> (PK)</TD></TR><TR><TD ALIGN="LEFT">hostel_id (FK)</TD></TR><TR><TD ALIGN="LEFT">name, email, phone</TD></TR></TABLE> >];
+  complaint [label=< <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" COLOR="#d76a6a"><TR><TD BGCOLOR="#ffe4e4"><B>COMPLAINT</B></TD></TR><TR><TD ALIGN="LEFT"><U>complaint_id</U> (PK)</TD></TR><TR><TD ALIGN="LEFT">student_id (FK), category_id (FK)</TD></TR><TR><TD ALIGN="LEFT">warden_id (FK, optional)</TD></TR><TR><TD ALIGN="LEFT">description, date_reported</TD></TR><TR><TD ALIGN="LEFT">status, priority</TD></TR></TABLE> >];
+  category [label=< <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" COLOR="#c5a02e"><TR><TD BGCOLOR="#fff4c9"><B>COMPLAINT_CATEGORY</B></TD></TR><TR><TD ALIGN="LEFT"><U>category_id</U> (PK)</TD></TR><TR><TD ALIGN="LEFT">category_name, description</TD></TR></TABLE> >];
+  appuser [label=< <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" COLOR="#54748c"><TR><TD BGCOLOR="#e4edf3"><B>APP_USER</B></TD></TR><TR><TD ALIGN="LEFT"><U>user_id</U> (PK)</TD></TR><TR><TD ALIGN="LEFT">full_name, email (unique)</TD></TR><TR><TD ALIGN="LEFT">password_hash, role, is_active</TD></TR><TR><TD ALIGN="LEFT">student_id (FK, optional)</TD></TR><TR><TD ALIGN="LEFT">warden_id (FK, optional)</TD></TR></TABLE> >];
+  // Cardinalities are placed at the endpoints so they remain close to the correct entity.
+  hostel -> room [taillabel="1", headlabel="N", labeldistance=1.4, labelangle=25];
+  hostel -> warden [taillabel="1", headlabel="N", labeldistance=1.4, labelangle=25];
+  student -> allocation [taillabel="1", headlabel="N", labeldistance=1.4, labelangle=25];
+  room -> allocation [taillabel="1", headlabel="N", labeldistance=1.4, labelangle=25];
+  student -> complaint [taillabel="1", headlabel="N", labeldistance=1.4, labelangle=25];
+  warden -> complaint [taillabel="1", headlabel="N", labeldistance=1.4, labelangle=25];
+  category -> complaint [taillabel="1", headlabel="N", labeldistance=1.4, labelangle=25];
+  // Dashed links show optional, unique login identities for a student or warden.
+  student -> appuser [style=dashed, color="#74869b", arrowhead=none];
+  warden -> appuser [style=dashed, color="#74869b", arrowhead=none];
+  {rank=same; hostel; warden;}
+  {rank=same; room; student;}
+  {rank=same; allocation; complaint; appuser;}
+}
